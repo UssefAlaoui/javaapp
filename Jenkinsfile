@@ -1,12 +1,24 @@
-Jenkinsfile (pipeline déclaratif)
-/* Requires the Docker Pipeline plugin */
+#!groovy
+
 pipeline {
-    agent { docker { image 'maven:3.9.6-eclipse-temurin-17-alpine' } }
+    agent any
+
+    tools {
+        maven "MAVEN" // You need to add a maven with name "3.6.0" in the Global Tools Configuration page
+    }
+
     stages {
-        stage('build') {
+        stage("Build") {
             steps {
-                sh 'mvn --version'
+                sh "mvn -version"
+                sh "mvn clean install"
             }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
         }
     }
 }
